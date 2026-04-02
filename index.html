@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physical Attributes &amp; Medal Success — 2016 Olympics Track &amp; Field</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1a237e;
+      --blue:   #3d85c8;
+      --gold:   #f5b800;
+      --bg:     #f5f7fa;
+      --card:   #ffffff;
+      --text:   #2c2c2c;
+      --muted:  #666;
+      --border: #e0e4ea;
+      --radius: 10px;
+      --shadow: 0 3px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ── Header ───────────────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #283593 60%, #3949ab 100%);
+      color: white;
+      padding: 48px 32px 40px;
+      text-align: center;
+    }
+
+    header .tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: clamp(22px, 3.5vw, 34px);
+      font-weight: 800;
+      line-height: 1.2;
+      max-width: 780px;
+      margin: 0 auto 12px;
+    }
+
+    header p {
+      font-size: 15px;
+      opacity: 0.8;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────────────────── */
+    nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    nav a {
+      display: block;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────────────── */
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    section {
+      margin-top: 48px;
+    }
+
+    /* ── Section headings ─────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+
+    /* ── Cards ────────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ── Visualization sections ───────────────────────────────────────────── */
+    .viz-section {
+      margin-top: 48px;
+    }
+
+    .viz-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .viz-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--navy);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .viz-meta h3 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .viz-meta .viz-badge {
+      display: inline-block;
+      margin-top: 3px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge-d3    { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+    .badge-altair{ background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+
+    .viz-frame {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .viz-frame iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+
+    .viz-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .viz-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 22px;
+    }
+
+    .viz-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--blue);
+      margin-bottom: 7px;
+    }
+
+    .viz-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Data attributes list ─────────────────────────────────────────────── */
+    .attr-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .attr-chip {
+      background: #e8f0fe;
+      color: var(--navy);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .attr-chip.derived {
+      background: #fff8e1;
+      color: #7a5c00;
+    }
+
+    /* ── Conclusions ──────────────────────────────────────────────────────── */
+    .conclusion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .conclusion-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 22px;
+    }
+
+    .conclusion-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .conclusion-item h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .conclusion-item p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── References ───────────────────────────────────────────────────────── */
+    .ref-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .ref-list li {
+      background: white;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      font-size: 14px;
+    }
+
+    .ref-list a {
+      color: var(--blue);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .ref-list a:hover { text-decoration: underline; }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .viz-info { grid-template-columns: 1fr; }
+      header { padding: 32px 20px 28px; }
+      main { padding: 0 14px 48px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="tag">DS4200 — Data Visualization Project</div>
+  <h1>Physical Attributes &amp; Medal Success<br>in 2016 Olympics Track &amp; Field</h1>
+  <p>Exploring how age, height, weight, and BMI relate to athletic performance and medal outcomes across event disciplines</p>
+</header>
+
+<!-- ── Navigation ──────────────────────────────────────────────────────────── -->
+<nav>
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#viz1">Overview</a></li>
+    <li><a href="#viz2">Age</a></li>
+    <li><a href="#viz3">Height &amp; Weight</a></li>
+    <li><a href="#viz4">BMI</a></li>
+    <li><a href="#viz5">Medal Rates</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ── Introduction ──────────────────────────────────────────────────────── -->
+  <section id="introduction">
+    <div class="section-label">Introduction</div>
+    <h2>Project Overview</h2>
+    <div class="card">
+      <p>
+        The Olympic Games attract the world's most elite athletes, making them a compelling arena for understanding
+        the relationship between physical attributes and competitive success. Track and field (Athletics) is a particularly
+        rich discipline because it spans an enormous range of event types — from explosive sprints to grueling marathons,
+        and from precision-demanding jumps to power-driven throws — each placing very different demands on an athlete's body.
+      </p>
+      <p>
+        This project investigates the 2016 Rio Summer Olympics Track &amp; Field competition with three central tasks:
+        (1) <strong>describe the distribution</strong> of athletes across event categories by gender and medal status;
+        (2) <strong>analyze whether physical metrics</strong> (age, height, weight, BMI) differ between medalists and non-medalists;
+        and (3) <strong>identify which physical ranges</strong> are associated with above-average medal rates within each metric.
+        Together, these visualizations help answer: <em>Do physical attributes predict Olympic success, or does event specialization
+        matter more?</em>
+      </p>
+      <p>
+        Our analysis reveals that body composition is strongly event-driven but only weakly predictive of medal outcomes
+        within any given event, suggesting that training, technique, and competitive strategy are the decisive factors.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Data ──────────────────────────────────────────────────────────────── -->
+  <section id="data">
+    <div class="section-label">Dataset</div>
+    <h2>Data Description</h2>
+    <div class="card">
+      <p>
+        The data comes from the Kaggle dataset
+        <strong>"120 Years of Olympic History: Athletes and Results"</strong>
+        (<a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results" target="_blank">heesoo37, 2018</a>),
+        which aggregates athlete-level records from the 1896 Athens Games through Rio 2016.
+        We filter to the <strong>2016 Summer Olympics, Athletics (Track &amp; Field) discipline</strong>,
+        yielding approximately <strong>1,700+ athlete-event rows</strong>.
+      </p>
+      <p>
+        The dataset is suitable for this topic because it contains both physical measurements and competition outcomes
+        for every individual athlete, enabling direct comparison between medalists and non-medalists.
+        However, it does not capture performance times or distances, training load, nationality-level resource disparities,
+        or event qualification standards — all factors that may confound the physical-attribute–medal relationship.
+      </p>
+      <p><strong>Key attributes used in this analysis:</strong></p>
+      <div class="attr-grid">
+        <span class="attr-chip">Name</span>
+        <span class="attr-chip">Sex (M/F)</span>
+        <span class="attr-chip">Age (years)</span>
+        <span class="attr-chip">Height (cm)</span>
+        <span class="attr-chip">Weight (kg)</span>
+        <span class="attr-chip">Sport</span>
+        <span class="attr-chip">Event</span>
+        <span class="attr-chip">Medal (Gold/Silver/Bronze/NA)</span>
+        <span class="attr-chip derived">BMI (derived)</span>
+        <span class="attr-chip derived">Has_Medal (binary)</span>
+        <span class="attr-chip derived">Medal_Status (label)</span>
+        <span class="attr-chip derived">Event_Category (derived)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       VISUALIZATION 1 — D3
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="viz1" class="viz-section">
+    <div class="section-label">Visualization 1</div>
+    <div class="viz-header">
+      <div class="viz-num">1</div>
+      <div class="viz-meta">
+        <h3>Event Category Overview: Participation &amp; Medal Rate</h3>
+        <span class="viz-badge badge-d3">D3.js</span>
+      </div>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="d3_viz.html" height="520" title="D3 Event Category Overview"></iframe>
+    </div>
+
+    <div class="viz-info">
+      <div class="viz-card">
+        <h4>Takeaway</h4>
+        <p>
+          Sprints/Hurdles has the largest athlete pool, reflecting the number of individual events in that category.
+          Relay events show the highest medal rates because each relay medal is shared among multiple team members,
+          inflating the rate relative to individual events.
+          When toggled to Medal Rate, event categories like Throws and Jumps outperform the overall baseline,
+          while Long Distance shows the most competitive (lowest medal rate) field.
+        </p>
+      </div>
+      <div class="viz-card">
+        <h4>Design Notes</h4>
+        <p>
+          A grouped bar chart was chosen to compare two genders side-by-side within each event category.
+          The toggle between Athlete Count and Medal Rate (%) uses animated D3 transitions to preserve spatial
+          context. An orange dashed reference line appears when switching to Medal Rate mode, showing the
+          overall average rate so viewers can instantly identify above- and below-average categories.
+          Hover tooltips and click-to-highlight interactions provide drill-down details without cluttering the chart.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       VISUALIZATION 2 — Altair
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="viz2" class="viz-section">
+    <div class="section-label">Visualization 2</div>
+    <div class="viz-header">
+      <div class="viz-num">2</div>
+      <div class="viz-meta">
+        <h3>Age Distribution by Medal Status &amp; Gender</h3>
+        <span class="viz-badge badge-altair">Altair</span>
+      </div>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="altair_charts/viz2_age_boxplot.html" height="490" title="Age Distribution Boxplot"></iframe>
+    </div>
+
+    <div class="viz-info">
+      <div class="viz-card">
+        <h4>Takeaway</h4>
+        <p>
+          Medalists tend to have a slightly higher median age than non-medalists for both genders,
+          suggesting that peak performance combines physical prime with competitive experience.
+          Women medalists show a tighter interquartile range, indicating a narrower age window for
+          elite performance in women's Track &amp; Field.
+        </p>
+      </div>
+      <div class="viz-card">
+        <h4>Design Notes</h4>
+        <p>
+          Box plots efficiently summarize the full age distribution (median, IQR, whiskers, outliers) while
+          enabling direct comparison between groups. Gold encodes medalists — leveraging the cultural association
+          with Olympic gold — while steel blue encodes non-medalists.
+          The radio button gender filter reduces overplotting and lets users explore gender-specific patterns
+          without toggling between two separate charts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       VISUALIZATION 3 — Altair
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="viz3" class="viz-section">
+    <div class="section-label">Visualization 3</div>
+    <div class="viz-header">
+      <div class="viz-num">3</div>
+      <div class="viz-meta">
+        <h3>Height vs. Weight by Event Category</h3>
+        <span class="viz-badge badge-altair">Altair</span>
+      </div>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="altair_charts/viz3_scatter.html" height="570" title="Height vs Weight Scatter"></iframe>
+    </div>
+
+    <div class="viz-info">
+      <div class="viz-card">
+        <h4>Takeaway</h4>
+        <p>
+          Body composition clusters vary dramatically by event type. Throws athletes occupy the high-weight,
+          tall region; distance runners are compact and light; sprinters and jumpers sit in the middle.
+          Within each category, medalists (diamonds) do not differ substantially in body type from non-medalists,
+          reinforcing that physical attributes set a range rather than determine outcomes.
+        </p>
+      </div>
+      <div class="viz-card">
+        <h4>Design Notes</h4>
+        <p>
+          A scatter plot best encodes two continuous variables simultaneously. Color distinguishes gender
+          (blue vs. pink) and shape encoding (diamond vs. circle) distinguishes medal status — using two
+          redundant channels (color + shape) for gender would create confusion, so only shape encodes
+          medal status. A category dropdown filter prevents overplotting when viewing all events at once
+          and enables focused within-category exploration. Hover tooltips surface the athlete's name, event,
+          and full statistics.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       VISUALIZATION 4 — Altair
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="viz4" class="viz-section">
+    <div class="section-label">Visualization 4</div>
+    <div class="viz-header">
+      <div class="viz-num">4</div>
+      <div class="viz-meta">
+        <h3>BMI Distribution by Event Category</h3>
+        <span class="viz-badge badge-altair">Altair</span>
+      </div>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="altair_charts/viz4_bmi_boxplot.html" height="490" title="BMI Distribution Boxplot"></iframe>
+    </div>
+
+    <div class="viz-info">
+      <div class="viz-card">
+        <h4>Takeaway</h4>
+        <p>
+          Throws athletes have by far the highest median BMI (~28–30), while long distance runners and
+          race walkers sit at the lowest end (~19–21). Switching to "Medalists Only" makes these
+          differences even more pronounced — body composition is a stronger differentiator in field events
+          than in track events, where aerobic capacity and pacing strategy dominate.
+        </p>
+      </div>
+      <div class="viz-card">
+        <h4>Design Notes</h4>
+        <p>
+          BMI is a single derived variable, so box plots sorted by median BMI provide a clear ordinal
+          ranking across categories. Horizontal orientation improves readability of the long category labels.
+          The "All / Medalists / Non-Medalists" radio toggle invites the user to test whether BMI patterns
+          shift for the elite subset — a meaningful analytical question that a static chart could not answer.
+          The tableau10 color palette assigns each category a distinct hue while remaining accessible.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       VISUALIZATION 5 — Altair
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="viz5" class="viz-section">
+    <div class="section-label">Visualization 5</div>
+    <div class="viz-header">
+      <div class="viz-num">5</div>
+      <div class="viz-meta">
+        <h3>Medal Rate by Physical Metric Range</h3>
+        <span class="viz-badge badge-altair">Altair</span>
+      </div>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="altair_charts/viz5_medal_rate.html" height="520" title="Medal Rate Bar Chart"></iframe>
+    </div>
+
+    <div class="viz-info">
+      <div class="viz-card">
+        <h4>Takeaway</h4>
+        <p>
+          For age, athletes in the 24–29 range consistently show the highest medal rates, confirming a
+          prime performance window. The dashed white baseline marks the overall medal rate, making it
+          immediately clear which ranges outperform the average. For BMI, a bimodal pattern emerges —
+          both the low end (distance runners) and high end (throwers) outperform the middle,
+          reflecting the event-specific body type advantage.
+        </p>
+      </div>
+      <div class="viz-card">
+        <h4>Design Notes</h4>
+        <p>
+          Binned bar charts transform a continuous attribute into an interpretable categorical view.
+          A sequential gold-orange color scale encodes medal rate magnitude — darker bars draw the eye
+          toward the most successful ranges without requiring the viewer to read the axis.
+          The metric dropdown (Age / Height / Weight / BMI) and gender radio share screen space efficiently,
+          making this a highly versatile single-panel summary. The baseline rule contextualizes relative
+          performance rather than requiring the viewer to know the absolute medal rate from memory.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Conclusions ────────────────────────────────────────────────────────── -->
+  <section id="conclusions">
+    <div class="section-label">Summary &amp; Conclusions</div>
+    <h2>What We Learned</h2>
+
+    <div class="conclusion-list">
+      <div class="conclusion-item">
+        <div class="conclusion-icon">🏋️</div>
+        <div>
+          <h4>Body type is event-driven, not medal-driven</h4>
+          <p>
+            The most striking finding is that physical attributes (height, weight, BMI) cluster by event category
+            but do <em>not</em> strongly differentiate medalists from non-medalists within any category.
+            Throwers are heavier and taller; distance runners are lighter and shorter; sprinters and jumpers
+            occupy the middle range. Yet within each of these clusters, medalists and non-medalists share nearly
+            identical body composition distributions. This suggests that at the elite level, athletes already
+            self-select into events that suit their body type, leaving little additional signal for medals.
+          </p>
+        </div>
+      </div>
+
+      <div class="conclusion-item">
+        <div class="conclusion-icon">📅</div>
+        <div>
+          <h4>Experience and peak physical age both matter</h4>
+          <p>
+            Medalists are consistently a few years older than non-medalists on average, and the 24–29 age
+            band shows the highest medal rates across most metrics. This dual signal — older than typical
+            but still in physical prime — suggests that Olympic medals require a combination of accumulated
+            competitive experience and preserved athletic capacity. Athletes who peak too early or hold on
+            too long appear at a disadvantage, pointing to periodized training and career planning as important
+            factors beyond raw physical talent.
+          </p>
+        </div>
+      </div>
+
+      <div class="conclusion-item">
+        <div class="conclusion-icon">🔬</div>
+        <div>
+          <h4>Future work: controlling for event and country effects</h4>
+          <p>
+            Because event-category composition heavily shapes aggregate physical statistics, a more rigorous
+            analysis would control for event at the individual level (comparing medalists to non-medalists
+            within the <em>same</em> event). Additionally, incorporating country-level metrics (GDP, national
+            sports infrastructure) and performance data (times, distances) would allow separating resource
+            effects from physical attribute effects — an important confound in international sport research.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── References ─────────────────────────────────────────────────────────── -->
+  <section id="references">
+    <div class="section-label">References</div>
+    <h2>Related Work</h2>
+    <ul class="ref-list">
+      <li>
+        Norton, K., &amp; Olds, T. (1996). <em>Anthropometrica: A textbook of body measurement for sports and health courses.</em>
+        UNSW Press. — Foundational reference for how body dimensions relate to athletic performance across disciplines.
+        <br><a href="https://doi.org/10.1080/026404100365545" target="_blank">doi:10.1080/026404100365545</a>
+      </li>
+      <li>
+        Sedeaud, A., Marc, A., Marck, A., Dor, F., Schipman, J., Dorsey, M., … Toussaint, J.-F. (2014).
+        BMI, a performance parameter for speed improvement.
+        <em>PLOS ONE, 9</em>(2), e90183. — Examines how body-mass index relates to sprinting and endurance performance
+        at the international level.
+        <br><a href="https://doi.org/10.1371/journal.pone.0090183" target="_blank">doi:10.1371/journal.pone.0090183</a>
+      </li>
+      <li>
+        Kaggle Dataset — heesoo37 (2018). <em>120 Years of Olympic History: Athletes and Results.</em>
+        <br><a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results" target="_blank">
+          kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
+        </a>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- ── Footer ──────────────────────────────────────────────────────────────── -->
+<footer>
+  DS4200 — Information Presentation &amp; Data Visualization &nbsp;|&nbsp;
+  2016 Olympics Track &amp; Field Analysis &nbsp;|&nbsp; Spring 2025
+</footer>
+
+</body>
+</html>
