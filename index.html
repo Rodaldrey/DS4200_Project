@@ -466,7 +466,7 @@
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          This interactive grouped bar chart was chosen to compare two genders side by side within each event category. Toggle between Athlete Count and Medal Rate (%) using the buttons on top to illustrate how athlete and medal distribution differs across events. In Medal Rate, there is a dashed orange line that reflects the overall average medal rate to serve as a baseline for comparison. Hover tooltips and click-to-highlight interactions also reveal average metrics of the athletes who participate in each category. 
+          We used a grouped bar chart so men and women can be compared side by side in each event category without jumping between plots. The top buttons switch between athlete count and medal rate, which makes it easier to see how participation and outcomes do not always move together. In medal-rate mode, the dashed orange line marks the overall average (7.7%) so standout categories are easy to spot. Tooltips and click highlights add context without cluttering the chart.
         </p>
       </div>
     </div>
@@ -502,11 +502,10 @@
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          Box plots efficiently summarize the full age distribution (median, IQR, whiskers, outliers) while
-          enabling direct comparison between groups. Gold encodes medalists — leveraging the cultural association
-          with Olympic gold — while steel blue encodes non-medalists.
-          The radio button gender filter reduces overplotting and lets users explore gender-specific patterns
-          without toggling between two separate charts.
+          A box plot gave us the cleanest way to compare age distributions across groups without losing the spread
+          of the data. We used gold for medalists and steel blue for non-medalists so the distinction is immediate.
+          The gender filter keeps everything in one view and helps avoid overplotting, while still making
+          gender-specific patterns easy to check.
         </p>
       </div>
     </div>
@@ -539,7 +538,10 @@
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          The interactive scatter plot encodes height, weight, and medal status for each athlete. Male athletes (blue) cluster at a higher weight and height than female athletes (pink). Medalists are highlighted with the diamond shape to distinguish them from non-medalists. Using the dropdown menu will present only the athletes who participated in those events, enabling exploration of physical attributes within each category. A hover tooltip shows the athlete's name, event, and specific metrics.
+          The scatter plot lets us show height and weight together for each athlete, with color for gender and shape
+          for medal status. The dropdown filters to a single event category so users can inspect tighter clusters
+          instead of one crowded cloud. Hover tooltips show the athlete name, event, and measurements for quick
+          spot checks.
         </p>
       </div>
     </div>
@@ -572,7 +574,9 @@
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          Ordered boxplots provide clear ordinal ranking and full BMI distributions, to highlight the differences in median, IQR, and outliers across events. Toggling between All, Medalists, and Non-Medalists highlights how BMI patterns shift and reveals how body composition can differentiate between athletes.
+          We ordered the box plots so BMI patterns by event are easier to scan from low to high. This keeps medians,
+          spread, and outliers visible at the same time. The All/Medalists/Non-Medalists toggle helps show where
+          the distribution shifts when you isolate performance groups.
         </p>
       </div>
     </div>
@@ -605,7 +609,9 @@
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          This interactive bar chart highlights the medal rates for athletes at different ages and physical metrics. The dashed white line serves as a baseline reference for the average medal rate (7.7%). Select metrics with the drop down and use the gender radio buttons to explore all attributes within a single panel. 
+          This chart bins athletes by age, height, weight, or BMI and then compares medal rate across those bins.
+          The dashed white line gives a quick baseline at the overall average (7.7%). Metric and gender controls let
+          users answer focused questions without leaving the same panel.
         </p>
       </div>
     </div>
