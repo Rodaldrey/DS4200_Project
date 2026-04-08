@@ -234,26 +234,34 @@
       line-height: 1.6;
     }
 
-    /* ── Data attributes list ─────────────────────────────────────────────── */
-    .attr-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    /* ── Data attributes table ────────────────────────────────────────────── */
+    .attr-table {
+      width: 100%;
+      border-collapse: collapse;
       margin-top: 12px;
+      font-size: 14px;
     }
 
-    .attr-chip {
-      background: #e8f0fe;
+    .attr-table th,
+    .attr-table td {
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      text-align: left;
+    }
+
+    .attr-table thead tr {
+      background: var(--bg);
+      font-weight: 700;
       color: var(--navy);
-      border-radius: 6px;
-      padding: 4px 12px;
-      font-size: 13px;
-      font-weight: 500;
     }
 
-    .attr-chip.derived {
+    .attr-table tbody tr:nth-child(even) {
+      background: #fafbfc;
+    }
+
+    .attr-table tbody tr.derived-row td {
       background: #fff8e1;
-      color: #7a5c00;
+      color: #5a4200;
     }
 
     /* ── Conclusions ──────────────────────────────────────────────────────── */
@@ -370,10 +378,10 @@
     <h2>Project Overview</h2>
     <div class="card">
       <p>
-        The Olympic Games attract the world's most elite athletes, making them a compelling arena for understanding
+        The Olympic Games provides a rare opportunity to study elite athletic performance across more than a century of competition, making them a compelling arena for understanding
         the relationship between physical attributes and competitive success. Track and field (Athletics) is a particularly
-        rich discipline because it spans an enormous range of event types — from explosive sprints to grueling marathons,
-        and from precision-demanding jumps to power-driven throws — each placing very different demands on an athlete's body.
+        rich discipline because it spans an enormous range of event types — from quick sprints to long marathons,
+        and from explosive jumps to power-driven throws — each placing very different demands on an athlete's body.
       </p>
       <p>
         This project investigates the 2016 Rio Summer Olympics Track &amp; Field competition with three central tasks:
@@ -386,6 +394,9 @@
       <p>
         Our analysis reveals that body composition is strongly event-driven but only weakly predictive of medal outcomes
         within any given event, suggesting that training, technique, and competitive strategy are the decisive factors.
+
+        To learn more, check out this <a href="https://pubmed.ncbi.nlm.nih.gov/11583103/" target="_blank">foundational research</a> about how body dimensions relate to athletic performance,
+        or explore this <a href="https://doi.org/10.1371/journal.pone.0090183" target="_blank">research article</a> on BMI as a performance parameter for speed.
       </p>
     </div>
   </section>
@@ -404,26 +415,31 @@
         yielding approximately <strong>1,700+ athlete-event rows</strong>.
       </p>
       <p>
-        The dataset is suitable for this topic because it contains both physical measurements and competition outcomes
+        The dataset contains both physical measurements and competition outcomes
         for every individual athlete, enabling direct comparison between medalists and non-medalists.
         However, it does not capture performance times or distances, training load, nationality-level resource disparities,
         or event qualification standards — all factors that may confound the physical-attribute–medal relationship.
       </p>
       <p><strong>Key attributes used in this analysis:</strong></p>
-      <div class="attr-grid">
-        <span class="attr-chip">Name</span>
-        <span class="attr-chip">Sex (M/F)</span>
-        <span class="attr-chip">Age (years)</span>
-        <span class="attr-chip">Height (cm)</span>
-        <span class="attr-chip">Weight (kg)</span>
-        <span class="attr-chip">Sport</span>
-        <span class="attr-chip">Event</span>
-        <span class="attr-chip">Medal (Gold/Silver/Bronze/NA)</span>
-        <span class="attr-chip derived">BMI (derived)</span>
-        <span class="attr-chip derived">Has_Medal (binary)</span>
-        <span class="attr-chip derived">Medal_Status (label)</span>
-        <span class="attr-chip derived">Event_Category (derived)</span>
-      </div>
+      <table class="attr-table">
+        <thead>
+          <tr><th>Variable Name</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Name</td><td>Athlete's full name</td></tr>
+          <tr><td>Sex</td><td>Athlete gender (M/F)</td></tr>
+          <tr><td>Age</td><td>Athlete age in years</td></tr>
+          <tr><td>Height</td><td>Athlete height (cm)</td></tr>
+          <tr><td>Weight</td><td>Athlete weight (kg)</td></tr>
+          <tr><td>Sport</td><td>Sport discipline</td></tr>
+          <tr><td>Event</td><td>Specific competition event</td></tr>
+          <tr><td>Medal</td><td>Medal outcome (Gold / Silver / Bronze / NA)</td></tr>
+          <tr class="derived-row"><td>BMI</td><td>Body mass index, derived from height and weight (kg/m²)</td></tr>
+          <tr class="derived-row"><td>Has_Medal</td><td>Binary indicator of any medal outcome</td></tr>
+          <tr class="derived-row"><td>Medal_Status</td><td>Categorical label: Medalist or Non-Medalist</td></tr>
+          <tr class="derived-row"><td>Event_Category</td><td>Grouped event type (e.g. Sprints/Hurdles, Throws, Jumps)</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -448,21 +464,13 @@
       <div class="viz-card">
         <h4>Takeaway</h4>
         <p>
-          Sprints/Hurdles has the largest athlete pool, reflecting the number of individual events in that category.
-          Relay events show the highest medal rates because each relay medal is shared among multiple team members,
-          inflating the rate relative to individual events.
-          When toggled to Medal Rate, event categories like Throws and Jumps outperform the overall baseline,
-          while Long Distance shows the most competitive (lowest medal rate) field.
+          First, we observe the distribution of athletes across events. Sprints/Hurdles have the most athletes, while Combined Events have very few. There is generally equal participation between men and women in track and field events, though the side-by-side bar plot highlights how more men participate in Long Distance/Race Walking events. We also see that across all events, there is a 7.7% average medal rate. Long Distance/Race Walking has a very low medal rate, suggesting a competitive landscape with few opportunities to medal. On the other hand, Sprints/Hurdles and Throws events have above average medal rates. Despite having few athletes, the Combined Events also has a high medal rate - this could be attributed to all athletes on the winning teams sharing the Medalist status. 
         </p>
       </div>
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          A grouped bar chart was chosen to compare two genders side-by-side within each event category.
-          The toggle between Athlete Count and Medal Rate (%) uses animated D3 transitions to preserve spatial
-          context. An orange dashed reference line appears when switching to Medal Rate mode, showing the
-          overall average rate so viewers can instantly identify above- and below-average categories.
-          Hover tooltips and click-to-highlight interactions provide drill-down details without cluttering the chart.
+          This interactive grouped bar chart was chosen to compare two genders side by side within each event category. Toggle between Athlete Count and Medal Rate (%) using the buttons on top to illustrate how athlete and medal distribution differs across events. In Medal Rate, there is a dashed orange line that reflects the overall average medal rate to serve as a baseline for comparison. Hover tooltips and click-to-highlight interactions also reveal average metrics of the athletes who participate in each category. 
         </p>
       </div>
     </div>
@@ -529,21 +537,13 @@
       <div class="viz-card">
         <h4>Takeaway</h4>
         <p>
-          Body composition clusters vary dramatically by event type. Throws athletes occupy the high-weight,
-          tall region; distance runners are compact and light; sprinters and jumpers sit in the middle.
-          Within each category, medalists (diamonds) do not differ substantially in body type from non-medalists,
-          reinforcing that physical attributes set a range rather than determine outcomes.
+          Physical attributes Height and Weight vary drastically between athletes and across events. Athletes in the Throwing events have higher height and weight, while Long Distance \ Race Walkers are substantially lighter and shorter. Sprint\Hurdles and Jumps athletes fall in the middle. These clusters suggest a range of physical attributes for high level athletes to compete within. However, the scatter plot does not show noticeable differences between athletes who medaled and those who did not. This may indicate that height and weight does not determine medal outcomes for the athletes.
         </p>
       </div>
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          A scatter plot best encodes two continuous variables simultaneously. Color distinguishes gender
-          (blue vs. pink) and shape encoding (diamond vs. circle) distinguishes medal status — using two
-          redundant channels (color + shape) for gender would create confusion, so only shape encodes
-          medal status. A category dropdown filter prevents overplotting when viewing all events at once
-          and enables focused within-category exploration. Hover tooltips surface the athlete's name, event,
-          and full statistics.
+          The interactive scatter plot encodes height, weight, and medal status for each athlete. Male athletes (blue) cluster at a higher weight and height than female athletes (pink). Medalists are highlighted with the diamond shape to distinguish them from non-medalists. Using the dropdown menu will present only the athletes who participated in those events, enabling exploration of physical attributes within each category. A hover tooltip shows the athlete's name, event, and specific metrics.
         </p>
       </div>
     </div>
@@ -570,20 +570,13 @@
       <div class="viz-card">
         <h4>Takeaway</h4>
         <p>
-          Throws athletes have by far the highest median BMI (~28–30), while long distance runners and
-          race walkers sit at the lowest end (~19–21). Switching to "Medalists Only" makes these
-          differences even more pronounced — body composition is a stronger differentiator in field events
-          than in track events, where aerobic capacity and pacing strategy dominate.
+          To dive deeper into the physical attributes of athletes, we look at the BMI distribution across events. Similar to height and weight, Throw athletes have a notably greater median BMI. BMI appears to be a differentiator between medalists and non-medalists than height and weight are. When comparing the BMI distributions across all events, medalists in Sprints/Hurdles and Throws have greater BMIs than their non-medalist competitors. Long Distance/Race Walking and Combined Events have lower BMIs. This suggets that athletes on the extremes of their event's BMI distribution may have a competitive advantage. 
         </p>
       </div>
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          BMI is a single derived variable, so box plots sorted by median BMI provide a clear ordinal
-          ranking across categories. Horizontal orientation improves readability of the long category labels.
-          The "All / Medalists / Non-Medalists" radio toggle invites the user to test whether BMI patterns
-          shift for the elite subset — a meaningful analytical question that a static chart could not answer.
-          The tableau10 color palette assigns each category a distinct hue while remaining accessible.
+          Ordered boxplots provide clear ordinal ranking and full BMI distributions, to highlight the differences in median, IQR, and outliers across events. Toggling between All, Medalists, and Non-Medalists highlights how BMI patterns shift and reveals how body composition can differentiate between athletes.
         </p>
       </div>
     </div>
@@ -610,22 +603,13 @@
       <div class="viz-card">
         <h4>Takeaway</h4>
         <p>
-          For age, athletes in the 24–29 range consistently show the highest medal rates, confirming a
-          prime performance window. The dashed white baseline marks the overall medal rate, making it
-          immediately clear which ranges outperform the average. For BMI, a bimodal pattern emerges —
-          both the low end (distance runners) and high end (throwers) outperform the middle,
-          reflecting the event-specific body type advantage.
+          Finally, we look directly at medal rate across binned ranges of each physical metric. For age, athletes in the 28-33 range have the highest overall medal rate. However, this rate shifts by gender with men peaking earlier (24-28) and women peaking later (27-32), suggesting different physical prime windows. For height and weight, there is a general upward trend, while BMI rises at the low and high ends. This reflects the event-specific patterns seen earlier. The bars also highlight an outlier when looking at height, weight, and BMI in women. The bin at the upper extreme contain very few athletes, which contributes to a higher medal rate - this may be attributed to the Combined Events, where there are very few athletes competing in the first place.
         </p>
       </div>
       <div class="viz-card">
         <h4>Design Notes</h4>
         <p>
-          Binned bar charts transform a continuous attribute into an interpretable categorical view.
-          A sequential gold-orange color scale encodes medal rate magnitude — darker bars draw the eye
-          toward the most successful ranges without requiring the viewer to read the axis.
-          The metric dropdown (Age / Height / Weight / BMI) and gender radio share screen space efficiently,
-          making this a highly versatile single-panel summary. The baseline rule contextualizes relative
-          performance rather than requiring the viewer to know the absolute medal rate from memory.
+          This interactive bar chart highlights the medal rates for athletes at different ages and physical metrics. The dashed white line serves as a baseline reference for the average medal rate (7.7%). Select metrics with the drop down and use the gender radio buttons to explore all attributes within a single panel. 
         </p>
       </div>
     </div>
@@ -638,50 +622,34 @@
 
     <div class="conclusion-list">
       <div class="conclusion-item">
-        <div class="conclusion-icon">🏋️</div>
         <div>
-          <h4>Body type is event-driven, not medal-driven</h4>
+          <h4>Physical attributes cluster by event, not by medal status</h4>
           <p>
-            The most striking finding is that physical attributes (height, weight, BMI) cluster by event category
-            but do <em>not</em> strongly differentiate medalists from non-medalists within any category.
-            Throwers are heavier and taller; distance runners are lighter and shorter; sprinters and jumpers
-            occupy the middle range. Yet within each of these clusters, medalists and non-medalists share nearly
-            identical body composition distributions. This suggests that at the elite level, athletes already
-            self-select into events that suit their body type, leaving little additional signal for medals.
+            Across all events, physical metrics have a weak correlation to an athlete's medal status. However, these attributes cluster strongly across event types. Throw athletes have the greatest heights, weights, and BMIs, while Long Distance/Race Walking athletes are shorter and lighter with low BMIs. Sprints/Hurdles and Jumps athletes fall in the middle. Within each event, medalists and non-medalists share similar body composition distributions, suggesting that at the elite level, athletes already self-select into events that suit their body type.
           </p>
         </div>
       </div>
 
       <div class="conclusion-item">
-        <div class="conclusion-icon">📅</div>
         <div>
-          <h4>Experience and peak physical age both matter</h4>
+          <h4>Age and BMI show the clearest signal for medal success</h4>
           <p>
-            Medalists are consistently a few years older than non-medalists on average, and the 24–29 age
-            band shows the highest medal rates across most metrics. This dual signal — older than typical
-            but still in physical prime — suggests that Olympic medals require a combination of accumulated
-            competitive experience and preserved athletic capacity. Athletes who peak too early or hold on
-            too long appear at a disadvantage, pointing to periodized training and career planning as important
-            factors beyond raw physical talent.
+            While height and weight show only a general upward trend in medal rate, age and BMI reveal more distinct patterns. Athletes who medal are most commonly in the 24–29 age range, with men peaking slightly earlier than women. For BMI, medal rate rises at both the low and high ends, reflecting the body type advantages specific to distance running and throwing events. Combined, these findings suggest that competitive experience paired with event-specific body composition offers the best chance of medaling.
           </p>
         </div>
       </div>
 
       <div class="conclusion-item">
-        <div class="conclusion-icon">🔬</div>
         <div>
-          <h4>Future work: controlling for event and country effects</h4>
+          <h4>Future work</h4>
           <p>
-            Because event-category composition heavily shapes aggregate physical statistics, a more rigorous
-            analysis would control for event at the individual level (comparing medalists to non-medalists
-            within the <em>same</em> event). Additionally, incorporating country-level metrics (GDP, national
-            sports infrastructure) and performance data (times, distances) would allow separating resource
-            effects from physical attribute effects — an important confound in international sport research.
+            Similar studies can be conducted on other Olympic years to follow these trends in future athletes. Further analysis could include performance metrics, like time and distance, to add another dimension of comparison between physical attributes and event outcomes. Controlling for event at the individual level — comparing medalists to non-medalists within the same event — would also provide a more rigorous test of whether physical attributes predict success beyond event self-selection.
           </p>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- ── References ─────────────────────────────────────────────────────────── -->
   <section id="references">
@@ -713,8 +681,8 @@
 
 <!-- ── Footer ──────────────────────────────────────────────────────────────── -->
 <footer>
-  DS4200 — Information Presentation &amp; Data Visualization &nbsp;|&nbsp;
-  2016 Olympics Track &amp; Field Analysis &nbsp;|&nbsp; Spring 2025
+  If you are interested in learning more about the project or have any questions, please feel free to reach out to us at:
+  Contact info.
 </footer>
 
 </body>
